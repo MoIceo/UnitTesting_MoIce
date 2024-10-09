@@ -25,7 +25,7 @@ namespace UnitTesting
         public void CreateOrder_ShouldReturnTrue_WhenOrderCreated()
         {
             var customer = new Customer { Id = 1, Name = "Test Customer", Email = "Email@gmail.com" };
-            var order = new Order { Id = 1, Date = DateTime.Today, Customer = customer , Amount = 1 };
+            var order = new Order { Id = 5, Date = DateTime.Today, Customer = customer , Amount = 1 };
 
             mockCustomerRepository.Setup(repo => repo.GetCustomerById(1)).Returns(customer);
             mockOrderRepository.Setup(repo => repo.GetOrderById(1)).Returns(order);
@@ -41,7 +41,18 @@ namespace UnitTesting
         [Fact]
         public void GetCustomerInfo_ShouldReturnCustomerInfo()
         {
+            var customer = new Customer { Id = 2, Name = "Test Customer", Email = "Email@gmail.com" };
+            var order1 = new Order { Id = 10, Date = DateTime.Today, Customer = customer, Amount = 1 };
+            var order2 = new Order { Id = 11, Date = DateTime.Today, Customer = customer, Amount = 20 };
 
+            mockCustomerRepository.Setup(repo => repo.GetCustomerById(1)).Returns(customer);
+            mockOrderRepository.Setup(repo => repo.GetOrders().Where(o => o.Customer == customer).ToList());
+
+            var service = new ShopService(mockCustomerRepository.Object, mockOrderRepository.Object, mockNotificationService.Object);
+
+            var result = service.GetCustomerInfo(1);
+
+            Assert.NotNull(result);
         }
     }
 }
