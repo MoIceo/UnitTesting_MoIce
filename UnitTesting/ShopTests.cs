@@ -44,13 +44,14 @@ namespace UnitTesting
             var customer = new Customer { Id = 2, Name = "Test Customer", Email = "Email@gmail.com" };
             var order1 = new Order { Id = 10, Date = DateTime.Today, Customer = customer, Amount = 1 };
             var order2 = new Order { Id = 11, Date = DateTime.Today, Customer = customer, Amount = 20 };
+            var orders = new List<Order> { order1, order2 };
 
-            mockCustomerRepository.Setup(repo => repo.GetCustomerById(1)).Returns(customer);
-            mockOrderRepository.Setup(repo => repo.GetOrders().Where(o => o.Customer == customer).ToList());
+            mockCustomerRepository.Setup(repo => repo.GetCustomerById(2)).Returns(customer);
+            mockOrderRepository.Setup(repo => repo.GetOrders()).Returns(orders);
 
             var service = new ShopService(mockCustomerRepository.Object, mockOrderRepository.Object, mockNotificationService.Object);
 
-            var result = service.GetCustomerInfo(1);
+            var result = service.GetCustomerInfo(2);
 
             Assert.NotNull(result);
         }
