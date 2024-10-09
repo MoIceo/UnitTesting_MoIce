@@ -22,7 +22,7 @@ namespace UnitTesting
         }
 
         [Fact]
-        public void CreateOrder_ShouldReturnTrue_WhenOrderAdded()
+        public void CreateOrder_ShouldReturnTrue_WhenOrderCreated()
         {
             var customer = new Customer { Id = 1, Name = "Test Customer", Email = "Email@gmail.com" };
             var order = new Order { Id = 1, Date = DateTime.Today, Customer = customer , Amount = 1 };
@@ -36,6 +36,12 @@ namespace UnitTesting
 
             mockOrderRepository.Verify(repo => repo.AddOrder(order), Times.Once);
             mockNotificationService.Verify(s => s.SendNotification(customer.Email, $"Order {order.Id} created for customer {order.Customer.Name} total price {order.Amount}"), Times.Once);
+        }
+
+        [Fact]
+        public void GetCustomerInfo_ShouldReturnCustomerInfo()
+        {
+
         }
     }
 }
